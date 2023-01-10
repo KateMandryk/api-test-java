@@ -14,7 +14,7 @@ import static io.restassured.RestAssured.given;
 
 public class TestAPI {
 
-    @Test
+    @Test(groups = {"group1"})
     public void testRestAPI()  {
         FileReaderUtil reader=new FileReaderUtil();
         Specifications.installSpecification(Specifications.requestSpec(reader.getConfig("url")), Specifications.responseSpecOk200());
