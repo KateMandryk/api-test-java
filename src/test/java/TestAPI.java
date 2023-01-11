@@ -20,7 +20,7 @@ public class TestAPI {
     private final String user5="/5";
 
 
-    @Test
+    @Test(groups = {"group1"})
     public void testRestAPI()  {
         FileReaderUtil reader=new FileReaderUtil();
         ApplicationApi applicationApi=new ApplicationApi();

@@ -2,11 +2,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"><suite name="All Test Suite"><test verbose="2" preserve-order="true" name="C:/Users/Admin/IdeaProjects/RestAPITask/src/test/java">
     <groups>
         <run>
-            <include name = "group1"></include>
+            <include name="group1"/>
         </run>
     </groups>
     <classes>
-        <class name="TestAPI"></class>
+        <class name="TestAPI"/>
     </classes>
 </test>
 </suite>
