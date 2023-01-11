@@ -2,8 +2,8 @@ package utilities;
 
 import java.util.UUID;
 
-public class Random {
-    public String getRandomString(){
+public abstract class Random {
+    public static String getRandomString(){
             return UUID.randomUUID().toString().replace("-","");
         }
     }

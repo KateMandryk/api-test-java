@@ -1,6 +1,7 @@
-import api.Specifications;
+import api.ApplicationApi;
+import api.Endpoints;
 import api.pojo.*;
-import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import utilities.FileReaderUtil;
@@ -13,62 +14,44 @@ import java.util.stream.Collectors;
 import static io.restassured.RestAssured.given;
 
 public class TestAPI {
+    private final String id="id";
+    private final String post99="/99";
+    private final String post150="/150";
+    private final String user5="/5";
 
-    @Test(groups = {"group1"})
+
+    @Test
     public void testRestAPI()  {
         FileReaderUtil reader=new FileReaderUtil();
-        Specifications.installSpecification(Specifications.requestSpec(reader.getConfig("url")), Specifications.responseSpecOk200());
-        Response response=given()
-                .when()
-                .get("posts");
-        List<User> idList =response.then()
-                .extract().body().jsonPath().get("id");
-        List<User> sortedIdList = idList.stream().sorted().collect(Collectors.toList());
-        Assert.assertEquals(response.getStatusCode(),reader.getStatusCode("statusCode200"),"Status code does not match");
+        ApplicationApi applicationApi=new ApplicationApi();
+
+
+        List<Post> idList = applicationApi.getListWithParam(id);
+        List<Post> sortedIdList = idList.stream().sorted().collect(Collectors.toList());
+        Assert.assertEquals( applicationApi.getResourcePosts().getStatusCode(), HttpStatus.SC_OK,"Status code does not match");
         Assert.assertEquals(idList, sortedIdList, "List not sorted");
 
-        Specifications.installSpecification(Specifications.requestSpec(reader.getConfig("url")), Specifications.responseSpecOk200());
-        Response response1 = given().when().get("posts/99");
-        String userId = response1.jsonPath().getString("userId");
-        String id = response1.jsonPath().getString("id");
-        String title = response1.jsonPath().getString("title");
-        String body = response1.jsonPath().getString("body");
-        Assert.assertEquals(response1.getStatusCode(),reader.getStatusCode("statusCode200"),"Status code does not match");
-        Assert.assertEquals(userId,reader.getUserList().get(0).getUserId().toString(), "UserId does not match");
-        Assert.assertEquals(id,reader.getUserList().get(0).getId().toString(), "Id does not match");
-        Assert.assertFalse(title.isEmpty(), "Title is empty");
-        Assert.assertFalse(body.isEmpty(), "Body is empty");
+        Post postsId99=applicationApi.getPost(post99);
+        Assert.assertEquals(applicationApi.getResourcePosts(post99).getStatusCode(),HttpStatus.SC_OK,"Status code does not match");
+        Assert.assertTrue(postsId99.getUserId().equals(reader.getUserList().get(0).getUserId()) && postsId99.getId().equals(reader.getUserList().get(0).getId()) && postsId99.getTitle().equals(reader.getUserList().get(0).getTitle()) && postsId99.getBody().equals(reader.getUserList().get(0).getBody()),"Post data does not match");
 
-        Specifications.installSpecification(Specifications.requestSpec(reader.getConfig("url")),Specifications.responseSpecError404());
-        Response response2 = given().when().get("posts/150");
-        Map<String,String> responseBody=response2.body().jsonPath().getMap(".");
-        Assert.assertEquals(response2.getStatusCode(),reader.getStatusCode("statusCode404"),"Status code does not match");
-        Assert.assertTrue(responseBody.isEmpty());
+        Map <String,String> responseBody=applicationApi.getEmptyPost(post150);
+        Assert.assertEquals(applicationApi.getResourcePosts(post150).getStatusCode(),HttpStatus.SC_NOT_FOUND,"Status code does not match");
+        Assert.assertTrue(responseBody.isEmpty(),"Body is not empty");
 
-        Specifications.installSpecification(Specifications.requestSpec(reader.getConfig("url")), Specifications.responseSpec201());
-        Random random = new Random();
-        User userRequest = new User(reader.getUserList().get(1).getUserId(), reader.getUserList().get(1).getId(), random.getRandomString(), random.getRandomString());
-        Response response3=given().body(userRequest).when().post("posts/");
-        User userResponse =response3.then().log().all().extract().as(User.class);
-        Assert.assertEquals(userRequest.getUserId(), userResponse.getUserId(), "UserId does not match");
-        Assert.assertEquals(userRequest.getBody(), userResponse.getBody(), "Body does not match");
-        Assert.assertEquals(userRequest.getTitle(), userResponse.getTitle(), "Title does not match");
+        Post postRequest = new Post(reader.getUserList().get(1).getUserId(), reader.getUserList().get(1).getId(), Random.getRandomString(), Random.getRandomString());
+        Post postResponse =applicationApi.getCreatedPost(postRequest);
+        Assert.assertEquals(applicationApi.createResource(postRequest).getStatusCode(),HttpStatus.SC_CREATED,"Status code does not match");
+        Assert.assertTrue( postRequest.getUserId().equals(postResponse.getUserId()) && postRequest.getId().equals(postResponse.getId()) && postRequest.getTitle().equals(postResponse.getTitle()) && postRequest.getBody().equals(postResponse.getBody()),"Request and Response does not match");
 
-        Specifications.installSpecification(Specifications.requestSpec(reader.getConfig("url")), Specifications.responseSpecOk200());
-        Response response4= given()
-                .when()
-                .get("users");
-        List<Users> users=response4.then()
-                .extract().body().jsonPath().getList(".", Users.class);
-        List<Users> actualResultUserId5= Collections.singletonList(users.get(4));
+        List<Users> users=applicationApi.getListUsers();
         List <Users> expectedResultUserId5= reader.getExpectedUsers();
-        Assert.assertEquals(response4.getStatusCode(),reader.getStatusCode("statusCode200"),"Status code does not match");
-        Assert.assertEquals(actualResultUserId5.toString(),expectedResultUserId5.toString(),"User data does not match");
+        Assert.assertEquals(applicationApi.getResourceUsers().getStatusCode(), HttpStatus.SC_OK,"Status code does not match");
+        Assert.assertTrue(users.get(4).id.equals(expectedResultUserId5.get(0).id) && users.get(4).name.equals(expectedResultUserId5.get(0).name) && users.get(4).username.equals(expectedResultUserId5.get(0).username) && users.get(4).email.equals(expectedResultUserId5.get(0).email) && users.get(4).address.toString().equals(expectedResultUserId5.get(0).address.toString()) && users.get(4).phone.equals(expectedResultUserId5.get(0).phone) && users.get(4).website.equals(expectedResultUserId5.get(0).website) && users.get(4).company.toString().equals(expectedResultUserId5.get(0).company.toString()),"User data does not match");
 
-        Specifications.installSpecification(Specifications.requestSpec(reader.getConfig("url")), Specifications.responseSpecOk200());
-        Response response5 = given().when().get("users/5");
-        Users userId5 = response5.as(Users.class);
-        Assert.assertEquals(response5.getStatusCode(),reader.getStatusCode("statusCode200"),"Status code does not match");
-        Assert.assertEquals(userId5.toString(),actualResultUserId5.toString().replaceAll("^\\[|\\]$",""),"User data does not match");
+        Users userId5 =applicationApi.getUser(user5);
+        Assert.assertEquals(applicationApi.getResourceUsers(user5).getStatusCode(),HttpStatus.SC_OK,"Status code does not match");
+        Assert.assertTrue( userId5.id.equals(users.get(4).id) && userId5.name.equals(users.get(4).name) && userId5.username.equals(users.get(4).username) && userId5.email.equals(users.get(4).email) && userId5.address.toString().equals(users.get(4).address.toString()) && userId5.phone.equals(users.get(4).phone) && userId5.website.equals(users.get(4).website) && userId5.company.toString().equals(users.get(4).company.toString()),"User data does not match");
+
     }
 }

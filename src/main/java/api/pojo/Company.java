@@ -1,6 +1,8 @@
 package api.pojo;
 
-public class Company extends Users{
+import java.util.Objects;
+
+public class Company {
     private String name;
     private String catchPhrase;
     private String bs;
@@ -30,5 +32,19 @@ public class Company extends Users{
                 ", catchPhrase='" + catchPhrase + '\'' +
                 ", bs='" + bs + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Company)) return false;
+        if (!super.equals(o)) return false;
+        Company company = (Company) o;
+        return name.equals(company.name) && catchPhrase.equals(company.catchPhrase) && bs.equals(company.bs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name, catchPhrase, bs);
     }
 }

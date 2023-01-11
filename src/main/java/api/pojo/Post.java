@@ -1,12 +1,14 @@
 package api.pojo;
 
-public class User {
+import java.util.Objects;
+
+public class Post {
     private Integer userId;
     private Integer id;
     private String title;
     private String body;
-    public User() {}
-    public User(Integer userId, Integer id, String title, String body) {
+    public Post() {}
+    public Post(Integer userId, Integer id, String title, String body) {
         this.userId = userId;
         this.id = id;
         this.title = title;
@@ -31,11 +33,24 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Post{" +
                 "userId=" + userId +
                 ", id=" + id +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Post)) return false;
+        Post post = (Post) o;
+        return userId.equals(post.userId) && id.equals(post.id) && title.equals(post.title) && body.equals(post.body);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, id, title, body);
     }
 }

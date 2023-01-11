@@ -1,6 +1,8 @@
 package api.pojo;
 
-public class Geo extends Address{
+import java.util.Objects;
+
+public class Geo {
     private String lat;
     private String lng;
 
@@ -24,5 +26,19 @@ public class Geo extends Address{
                 "lat='" + lat + '\'' +
                 ", lng='" + lng + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Geo)) return false;
+        if (!super.equals(o)) return false;
+        Geo geo = (Geo) o;
+        return lat.equals(geo.lat) && Objects.equals(lng, geo.lng);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), lat, lng);
     }
 }

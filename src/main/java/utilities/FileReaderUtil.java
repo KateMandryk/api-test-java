@@ -1,6 +1,6 @@
 package utilities;
 
-import api.pojo.User;
+import api.pojo.Post;
 import api.pojo.Users;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,30 +19,33 @@ public class FileReaderUtil {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    public List<User> getUserList() {
+    public List<Post> getUserList() {
         File file = new File(filePosts);
-        List<User> user = null;
-        try {
-            user = objectMapper.readValue(file, new TypeReference<List<User>>() {
-            });
+        List<Post> post = null;
+        {
+            try {
+                post = objectMapper.readValue(file, new TypeReference<List<Post>>() {
+                });
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return post;
         }
-        return user;
     }
-
-
 
     public List<Users> getExpectedUsers() {
         File file1 = new File(fileUsers);
         List<Users> expectedUsers = null;
+
+        {
             try {
                 expectedUsers = objectMapper.readValue(file1, new TypeReference<List<Users>>() {
                 });
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
         return expectedUsers;
     }
 
@@ -73,8 +76,7 @@ public class FileReaderUtil {
         return config;
 
     }
-
-    public int getStatusCode(String name) {
+    public int getStatusCode (String name) {
         return Integer.parseInt(getConfig(name));
     }
 }

@@ -1,6 +1,8 @@
 package api.pojo;
 
-public class Address extends Users {
+import java.util.Objects;
+
+public class Address  {
     private String street;
     private String suite;
     private String city;
@@ -8,12 +10,8 @@ public class Address extends Users {
     private Geo geo;
 
     public Address() {
-        this.street = street;
-        this.suite = suite;
-        this.city = city;
-        this.zipcode = zipcode;
-        this.geo = geo;
     }
+
 
     public String getStreet() {
         return street;
@@ -44,5 +42,19 @@ public class Address extends Users {
                 ", zipcode='" + zipcode + '\'' +
                 ", geo=" + geo +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address)) return false;
+        if (!super.equals(o)) return false;
+        Address address = (Address) o;
+        return street.equals(address.street) && suite.equals(address.suite) && city.equals(address.city) && zipcode.equals(address.zipcode) && geo.equals(address.geo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), street, suite, city, zipcode, geo);
     }
 }

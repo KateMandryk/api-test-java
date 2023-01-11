@@ -1,7 +1,11 @@
 {
-  "url": "https://jsonplaceholder.typicode.com/",
-  "statusCode200": "200",
-  "statusCode404": "404",
-  "statusCode201": "201"
+  "Url": "https://vk.com/",
+  "login": "+375291660762",
+  "password":"PuV6j_.2&$m9h?UYY",
+  "apiURL": "https://api.vk.com/method/",
+  "access_token":"vk1.a.xvIkpywC6LvXJWG2_HmQukLj0mpKVlVEjFq7DRijDRa2rng53zq3EPTOvampGdBZb4W9QsBv4IlHkdNQ4txDsqFDBCWk3Wxc8dLRfvNntCspQ3XJEmVmjmNyNRlEwcTDP30dvR5o84WFfYg0F-tcpU7OeRqu1RIfx94IOJDXp1HEUdP40PEMYDzeKP-nKMeTRKxxJfKBLUdvWEZbmmareg",
+  "version_token":"5.131"
 
 }
+
+
