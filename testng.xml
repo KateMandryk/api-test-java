@@ -3,6 +3,8 @@
     <groups>
         <run>
             <include name="group1"/>
+            <include name="group2"/>
+            <include name="group3"/>
         </run>
     </groups>
     <classes>
