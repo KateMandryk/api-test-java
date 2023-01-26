@@ -3,10 +3,13 @@ import api.pojo.Post;
 import api.pojo.Users;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.ISuite;
+import org.testng.ITestResult;
+import org.testng.annotations.*;
 import utilities.FileReaderUtil;
 import utilities.Random;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,7 +21,7 @@ public class TestAPI {
     private final String user5 = "/5";
     private final FileReaderUtil reader = new FileReaderUtil();
     private final ApplicationApi applicationApi = new ApplicationApi();
-
+    private final String env = System.getenv("GROUPS");
 
     @Test(groups = {"group1"})
     public void testRestAPI() {
@@ -26,6 +29,7 @@ public class TestAPI {
         List<Post> sortedIdList = idList.stream().sorted().collect(Collectors.toList());
         Assert.assertEquals(applicationApi.getResourcePosts().getStatusCode(), HttpStatus.SC_OK, "Status code does not match");
         Assert.assertEquals(idList, sortedIdList, "List not sorted");
+        System.out.println(env);
     }
 
     @Test(groups = {"group1"})
@@ -49,6 +53,7 @@ public class TestAPI {
             Assert.assertEquals(applicationApi.createResource(postRequest).getStatusCode(), HttpStatus.SC_CREATED, "Status code does not match");
             Assert.assertTrue(postRequest.getUserId().equals(postResponse.getUserId()) && postRequest.getId().equals(postResponse.getId()) && postRequest.getTitle().equals(postResponse.getTitle()) && postRequest.getBody().equals(postResponse.getBody()), "Request and Response does not match");
         }
+
             @Test(groups = {"group3"})
             public void testUsers () {
             List<Users> users = applicationApi.getListUsers();
@@ -61,4 +66,14 @@ public class TestAPI {
             Assert.assertTrue(userId5.id.equals(users.get(4).id) && userId5.name.equals(users.get(4).name) && userId5.username.equals(users.get(4).username) && userId5.email.equals(users.get(4).email) && userId5.address.toString().equals(users.get(4).address.toString()) && userId5.phone.equals(users.get(4).phone) && userId5.website.equals(users.get(4).website) && userId5.company.toString().equals(users.get(4).company.toString()), "User data does not match");
 
         }
+
+    @AfterMethod
+    public void afterMethod(ITestResult result)
+    {
+        if(result.getStatus() == ITestResult.SUCCESS)
+        {
+            result.getStatus();
+            System.out.println("passed **********");
+        }
+}
     }
