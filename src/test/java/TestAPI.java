@@ -29,7 +29,7 @@ public class TestAPI {
         List<Post> sortedIdList = idList.stream().sorted().collect(Collectors.toList());
         Assert.assertEquals(applicationApi.getResourcePosts().getStatusCode(), HttpStatus.SC_OK, "Status code does not match");
         Assert.assertEquals(idList, sortedIdList, "List not sorted");
-        System.out.println(env);
+
     }
 
     @Test(groups = {"group1"})
