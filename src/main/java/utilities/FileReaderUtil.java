@@ -24,7 +24,7 @@ public class FileReaderUtil {
         List<Post> post = null;
         {
             try {
-                post = objectMapper.readValue(file, new TypeReference<List<Post>>() {
+                post = objectMapper.readValue(file, new TypeReference<>() {
                 });
 
             } catch (Exception e) {
@@ -40,7 +40,7 @@ public class FileReaderUtil {
 
         {
             try {
-                expectedUsers = objectMapper.readValue(file1, new TypeReference<List<Users>>() {
+                expectedUsers = objectMapper.readValue(file1, new TypeReference<>() {
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -65,6 +65,7 @@ public class FileReaderUtil {
             e.printStackTrace();
         }
         JSONObject jsonObject = (JSONObject) jsonObj;
+        assert jsonObject != null;
         String config = (String) jsonObject.get(name);
 
         try {
@@ -80,8 +81,3 @@ public class FileReaderUtil {
         return Integer.parseInt(getConfig(name));
     }
 }
-
-
-
-
-

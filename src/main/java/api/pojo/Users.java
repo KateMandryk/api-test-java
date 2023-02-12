@@ -1,7 +1,12 @@
 package api.pojo;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
+@Getter
+@EqualsAndHashCode
+@ToString
 public class Users {
     public Integer id;
     public String name;
@@ -24,65 +29,5 @@ public class Users {
     }
 
     public Users() {
-
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    @Override
-    public String toString() {
-        return "Users{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", address=" + address +
-                ", phone='" + phone + '\'' +
-                ", website='" + website + '\'' +
-                ", company=" + company +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Users)) return false;
-        Users users = (Users) o;
-        return id.equals(users.id) && name.equals(users.name) && username.equals(users.username) && email.equals(users.email) && address.equals(users.address) && phone.equals(users.phone) && website.equals(users.website) && company.equals(users.company);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, username, email, address, phone, website, company);
     }
 }
