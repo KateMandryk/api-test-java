@@ -2,13 +2,14 @@ package api.pojo;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Objects;
-
 @Getter
 @EqualsAndHashCode
 @ToString
+@Setter
 public class Post {
     private Integer userId;
     private Integer id;
@@ -24,4 +25,5 @@ public class Post {
         this.title = title;
         this.body = body;
     }
+
 }

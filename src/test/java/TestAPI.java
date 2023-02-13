@@ -18,7 +18,7 @@ public class TestAPI {
     private final String user5 = "/5";
     private final FileReaderUtil reader = new FileReaderUtil();
     private final ApplicationApi applicationApi = new ApplicationApi();
-
+    private final String env = System.getenv("GROUPS");
 
     @Test(groups = {"group1"})
     public void testRestAPI() {

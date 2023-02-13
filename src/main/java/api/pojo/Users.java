@@ -4,8 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Getter
-@EqualsAndHashCode
 @ToString
 public class Users {
     public Integer id;
@@ -29,5 +30,18 @@ public class Users {
     }
 
     public Users() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Users)) return false;
+        Users users = (Users) o;
+        return Objects.equals(id, users.id) && Objects.equals(name, users.name) && Objects.equals(username, users.username) && Objects.equals(email, users.email) && Objects.equals(address, users.address) && Objects.equals(phone, users.phone) && Objects.equals(website, users.website) && Objects.equals(company, users.company);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, username, email, address, phone, website, company);
     }
 }
